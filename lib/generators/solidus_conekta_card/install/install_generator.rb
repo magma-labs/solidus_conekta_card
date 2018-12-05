@@ -4,8 +4,10 @@ module SolidusConektaCard
       class_option :auto_run_migrations, type: :boolean, default: false
 
       def add_javascripts
-        append_file 'vendor/assets/javascripts/spree/frontend/all.js', "//= require spree/frontend/solidus_conekta_card\n"
+        append_file 'vendor/assets/javascripts/spree/backend/all.js', "//= require spree/conekta\n"
         append_file 'vendor/assets/javascripts/spree/backend/all.js', "//= require spree/backend/solidus_conekta_card\n"
+        append_file 'vendor/assets/javascripts/spree/frontend/all.js', "//= require spree/frontend/solidus_conekta_card\n"
+        append_file 'vendor/assets/javascripts/spree/frontend/all.js', "//= require spree/conekta\n"
       end
 
       def add_stylesheets
