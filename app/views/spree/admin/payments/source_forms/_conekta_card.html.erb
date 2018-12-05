@@ -1,0 +1,52 @@
+<% param_prefix = "payment_source[#{payment_method.id}]" %>
+  <span class="card-errors"></span>
+  <div>
+    <label>
+      <span>Cardholder name</span>
+      <%= text_field_tag "#{param_prefix}[name]",
+                      "#{@order.billing_firstname} #{@order.billing_lastname}",
+                      { id: "name_on_card_#{payment_method.id}",
+                        data: { conekta: 'card[name]' } } %>
+    </label>
+  </div>
+  <div>
+    <label>
+      <span>Card number</span>
+      <% options_hash = Rails.env.production? ? { autocomplete: 'off' } : {} %>
+      <%= text_field_tag "#{param_prefix}[number]",
+                     '',
+                     options_hash.merge(id: 'card_number',
+                                        class: 'required cardNumber',
+                                        size: 19,
+                                        maxlength: 19,
+                                        autocomplete: "off",
+                                        data: { conekta: 'card[number]' }) %>
+    </label>
+  </div>
+  <div>
+    <label>
+      <span>CVC</span>
+      <%= text_field_tag "#{param_prefix}[verification_value]",
+                     '',
+                     options_hash.merge(id: 'card_code',
+                                        class: 'required cardCode',
+                                        size: 5,
+                                        data: { conekta: 'card[cvc]' } ) %>
+    </label>
+  </div>
+  <div>
+    <label>
+      <span>Expiration date (MM/YYYY)</span>
+      <%= select_month(Date.today,
+                   { prefix: param_prefix, field_name: 'month', use_month_numbers: true },
+                   class: 'required',
+                   id: "card_month",
+                   data: { conekta: 'card[exp_month]' }) %>
+    </label>
+    <span>/</span>
+    <%= select_year(Date.today,
+                    { prefix: param_prefix, field_name: 'year', start_year: Date.today.year, end_year: Date.today.year + 15 },
+                    class: 'required',
+                    id: "card_year",
+                    data: { conekta: 'card[exp_year]' }) %>
+  </div>
