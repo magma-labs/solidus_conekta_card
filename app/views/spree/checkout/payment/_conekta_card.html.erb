@@ -50,3 +50,7 @@
                     id: "card_year",
                     data: { conekta: 'card[exp_year]' }) %>
   </div>
+
+<%= javascript_tag do %>
+  Conekta.setPublicKey('<%= payment_method.preferences[:public_auth_token] %>');
+<% end  %>

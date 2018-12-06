@@ -1,5 +1,4 @@
 $(document).ready(function() {
-  Conekta.setPublicKey('key_Conekta'); // Add your Conekta public key
 
   var conektaSuccessResponseHandler = function(token) {
     var $form = $("#checkout_form_payment");

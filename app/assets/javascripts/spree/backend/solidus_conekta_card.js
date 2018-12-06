@@ -1,6 +1,4 @@
 $(document).ready(function() {
-  Conekta.setPublicKey('key_Conekta'); // Add your Conekta public key
-
   var conektaSuccessResponseHandler = function(token) {
     var $form = $("#new_payment");
     //Add the token_id in the form
