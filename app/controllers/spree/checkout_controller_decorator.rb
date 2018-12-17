@@ -7,13 +7,13 @@ Spree::CheckoutController.class_eval do
 
         assign_temp_address
 
+        if params[:conektaTokenId]
+          @order.payments.last.source.update_attributes(gateway_payment_profile_id: params[:conektaTokenId])
+        end
+
         unless transition_forward
           redirect_on_failure
           return
-        end
-
-        if params[:conektaTokenId]
-          @order.payments.last.source.update_attributes(gateway_payment_profile_id: params[:conektaTokenId])
         end
 
         if @order.completed?
