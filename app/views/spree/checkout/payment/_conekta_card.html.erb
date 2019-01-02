@@ -52,5 +52,6 @@
   </div>
 
 <%= javascript_tag do %>
+  var creditCardPaymentId = '#order_payments_attributes__payment_method_id_<%= payment_method.id %>'
   Conekta.setPublicKey('<%= payment_method.preferences[:public_auth_token] %>');
 <% end  %>
