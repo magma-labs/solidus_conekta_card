@@ -9,17 +9,16 @@ $(document).ready(function() {
   var conektaErrorResponseHandler = function(response) {
     var $form = $("#checkout_form_payment");
     $form.find(".card-errors").text(response.message_to_purchaser);
-    $form.find("button").prop("disabled", false);
   };
 
   //jQuery generate the token on submit.
   $(function () {
     $("#checkout_form_payment").submit(function(event) {
       var $form = $(this);
-      // Prevents double clic
-      $form.find("button").prop("disabled", true);
-      Conekta.Token.create($form, conektaSuccessResponseHandler, conektaErrorResponseHandler);
-      return false;
+      if ($(creditCardPaymentId).prop('checked')) {
+        Conekta.Token.create($form, conektaSuccessResponseHandler, conektaErrorResponseHandler);
+        return false;
+      }
     });
   });
 });
