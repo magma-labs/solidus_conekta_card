@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Spree
   class PaymentMethod::ConektaCard < PaymentMethod::CreditCard
     preference :auth_token, :string
