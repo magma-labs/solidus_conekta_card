@@ -1,0 +1,6 @@
+
+es-MX:
+  activerecord:
+    attributes:
+      spree/gateway/conekta_card_gateway:
+        number: Numero de Tarjeta
