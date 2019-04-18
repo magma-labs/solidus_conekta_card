@@ -1,8 +1,21 @@
-sudo: false
+dist: trusty
 cache: bundler
 language: ruby
-bundler_args: --quiet
-script:
-  - bundle exec rake
 rvm:
-  - 2.1.5
+  - 2.4.6
+env:
+  matrix:
+    - SOLIDUS_BRANCH=v2.4 DB=postgres
+    - SOLIDUS_BRANCH=v2.5 DB=postgres
+    - SOLIDUS_BRANCH=v2.6 DB=postgres
+    - SOLIDUS_BRANCH=v2.7 DB=postgres
+    - SOLIDUS_BRANCH=v2.8 DB=postgres
+    - SOLIDUS_BRANCH=v2.9 DB=postgres
+    - SOLIDUS_BRANCH=master DB=postgres
+    - SOLIDUS_BRANCH=v2.4 DB=mysql
+    - SOLIDUS_BRANCH=v2.5 DB=mysql
+    - SOLIDUS_BRANCH=v2.6 DB=mysql
+    - SOLIDUS_BRANCH=v2.7 DB=mysql
+    - SOLIDUS_BRANCH=v2.8 DB=mysql
+    - SOLIDUS_BRANCH=v2.9 DB=mysql
+    - SOLIDUS_BRANCH=master DB=mysql
