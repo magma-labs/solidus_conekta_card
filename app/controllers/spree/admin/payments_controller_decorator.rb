@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
-Spree::Admin::PaymentsController.class_eval do
-  def create
-    @payment = Spree::PaymentCreate.new(@order, object_params).build
-    if @payment.payment_method.source_required? && params[:card].present? && params[:card] != 'new'
-      @payment.source = @payment.payment_method.payment_source_class.find_by(id: params[:card])
-    end
+module AdminPaymentsDecorator
+  extend ActiveSupport::Concern
 
-    begin
+  included do
+    def create
+      @payment = Spree::PaymentCreate.new(@order, object_params).build
+      if @payment.payment_method.source_required? && params[:card].present? && params[:card] != 'new'
+        @payment.source = @payment.payment_method.payment_source_class.find_by(id: params[:card])
+      end
+
       if @payment.save
         if @order.completed?
           # If the order was already complete then go ahead and process the payment
@@ -33,3 +35,5 @@ Spree::Admin::PaymentsController.class_eval do
     end
   end
 end
+
+Spree::Admin::PaymentsController.include(AdminPaymentsDecorator)

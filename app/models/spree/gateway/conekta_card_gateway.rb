@@ -1,24 +1,22 @@
+# frozen_string_literal: true
+
 require 'conekta'
 
 module Spree
   class Gateway::ConektaCardGateway < Spree::CreditCard
     attr_accessor :server, :test_mode, :auth_token, :public_auth_token, :source_method
 
-    def purchase(money, source, gateway_options)
-      ::Conekta.api_key = auth_token ? auth_token : ''
+    def purchase(_money, source, gateway_options)
+      ::Conekta.api_key = auth_token || ''
       ::Conekta.api_version = '2.0.0'
 
       begin
         order = Spree::Order.find(gateway_options[:originator].order_id)
-
-        unless order.conekta_order_id
-          conekta_order = ::Conekta::Order.create(payload(order, source))
-        end
-
         conekta_order = ::Conekta::Order.find(order.conekta_order_id)
+        conekta_order ||= ::Conekta::Order.create(payload(order, source))
         ActiveMerchant::Billing::Response.new(true, 'Orden creada satisfactoriamente', {}, parse_response(conekta_order))
-      rescue ::Conekta::Error => error
-        ActiveMerchant::Billing::Response.new(false, error.details.map(&:message).join(', '))
+      rescue ::Conekta::Error => e
+        ActiveMerchant::Billing::Response.new(false, e.details.map(&:message).join(', '))
       end
     end
 
@@ -57,7 +55,13 @@ module Spree
     end
 
     def order_line_items(order)
-      order.line_items.map { |li| {name: li.product.name, unit_price: (li.price * 100).to_i, quantity: li.quantity} }
+      order.line_items.map do |li|
+        {
+          name: li.product.name,
+          unit_price: (li.price * 100).to_i,
+          quantity: li.quantity
+        }
+      end
     end
 
     def parse_response(response)
@@ -67,7 +71,13 @@ module Spree
     end
 
     def shipping_lines(order)
-      order.shipments.map {|s| {id: s.id, carrier: s.shipping_method.name, amount: (s.cost * 100).to_i} }
+      order.shipments.map do |s|
+        {
+          id: s.id,
+          carrier: s.shipping_method.name,
+          amount: (s.cost * 100).to_i
+        }
+      end
     end
   end
 end
