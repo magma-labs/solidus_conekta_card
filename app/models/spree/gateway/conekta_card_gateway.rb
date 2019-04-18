@@ -8,11 +8,15 @@ module Spree
       ::Conekta.api_key = auth_token ? auth_token : ''
       ::Conekta.api_version = '2.0.0'
 
-      order = Spree::Order.find(gateway_options[:originator].order_id)
-
       begin
-        response = ::Conekta::Order.create(payload(order, source))
-        ActiveMerchant::Billing::Response.new(true, 'Order creada satisfactoriamente', {}, parse_response(response))
+        order = Spree::Order.find(gateway_options[:originator].order_id)
+
+        unless order.conekta_order_id
+          conekta_order = ::Conekta::Order.create(payload(order, source))
+        end
+
+        conekta_order = ::Conekta::Order.find(order.conekta_order_id)
+        ActiveMerchant::Billing::Response.new(true, 'Orden creada satisfactoriamente', {}, parse_response(conekta_order))
       rescue ::Conekta::Error => error
         ActiveMerchant::Billing::Response.new(false, error.details.map(&:message).join(', '))
       end
@@ -46,7 +50,7 @@ module Spree
             address: {
               street1: order.ship_address.address1,
               postal_code: order.ship_address.zipcode,
-              country: 'mx'
+              country: 'MX'
           }
         }
       }
@@ -58,7 +62,7 @@ module Spree
 
     def parse_response(response)
       {
-          conekta_order_id: response.id
+        conekta_order_id: response.id
       }
     end
 
