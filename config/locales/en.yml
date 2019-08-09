@@ -2,7 +2,24 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  activerecord:
-    attributes:
-      spree/gateway/conekta_card_gateway:
-        number: Card Number
+  spree:
+    conekta_card_gateway: 'Conekta payments:'
+    activerecord:
+      attributes:
+        spree/gateway/conekta_card_gateway:
+          number: Card number
+          month: Month
+          verification_value: Verification number
+          year: Year
+      errors:
+        models:
+          spree/gateway/conekta_card_gateway:
+            attributes:
+              month:
+                not_a_number: Is not a number
+              year:
+                not_a_number: Is not a number
+              number:
+                blank: Is blank
+              verification_value:
+                blank: Is blank
