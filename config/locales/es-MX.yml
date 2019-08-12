@@ -1,6 +1,23 @@
 
 es-MX:
+  spree:
+    conekta_card_gateway: 'Conekta pagos:'
   activerecord:
     attributes:
       spree/gateway/conekta_card_gateway:
-        number: Numero de Tarjeta
+        number: Número de Tarjeta
+        month: Mes
+        verification_value: Número de verificación
+        year: Año
+    errors:
+      models:
+        spree/gateway/conekta_card_gateway:
+          attributes:
+            month:
+              not_a_number: No es numérico
+            year:
+              not_a_number: No es numérico
+            number:
+              blank: Está vacío
+            verification_value:
+              blank: Está vacío
