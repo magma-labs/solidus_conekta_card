@@ -15,11 +15,11 @@ module Spree
     end
 
     def gateway_class
-      Spree::Gateway::ConektaCardGateway
+      Spree::ConektaCardPayment
     end
 
     def payment_source_class
-      Spree::Gateway::ConektaCardGateway
+      Spree::ConektaCardPayment
     end
 
     def payment_profiles_supported?
