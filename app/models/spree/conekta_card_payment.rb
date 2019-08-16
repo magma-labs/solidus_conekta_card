@@ -58,6 +58,7 @@ module Spree
         ],
           line_items: order_line_items(order),
           shipping_lines: shipping_lines(order),
+          discount_lines: discount_line_items(order) + discount_adjustments(order),
           shipping_contact: {
             address: {
               street1: order.ship_address.address1,
@@ -74,6 +75,28 @@ module Spree
           name: li.product.name,
           unit_price: (li.price * 100).to_i,
           quantity: li.quantity
+        }
+      end
+    end
+
+    def discount_line_items(order)
+      order.line_item_adjustments.map do |li|
+        {
+          id: li.id,
+          code: li.promotion_code.value,
+          type: 'coupon',
+          amount: (li.amount * 100).to_i.abs
+        }
+      end
+    end
+
+    def discount_adjustments(order)
+      order.adjustments.map do |adjustment|
+        {
+          id: adjustment.id,
+          code: adjustment.promotion_code.value,
+          type: 'coupon',
+          amount: (adjustment.amount * 100).to_i.abs
         }
       end
     end
