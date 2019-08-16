@@ -1,11 +1,11 @@
 $(document).ready(function() {
-
   var conektaSuccessResponseHandler = function(token) {
     var $form = $("#checkout_form_payment");
     //Add the token_id in the form
-     $form.append($('<input type="hidden" name="conektaTokenId" id="conektaTokenId">').val(token.id));
+    $form.append($('<input type="hidden" name="conektaTokenId" id="conektaTokenId">').val(token.id));
     $form.get(0).submit(); //Submit
   };
+
   var conektaErrorResponseHandler = function(response) {
     var $form = $("#checkout_form_payment");
     $form.find(".card-errors").text(response.message_to_purchaser);
